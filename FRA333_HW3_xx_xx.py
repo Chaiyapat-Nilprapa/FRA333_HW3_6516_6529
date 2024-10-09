@@ -1,19 +1,19 @@
-import numpy as np
-import FKHW3
-
 # file สำหรับเขียนคำตอบ
 # ในกรณีที่มีการสร้าง function อื่น ๆ ให้ระบุว่า input-output คืออะไรด้วย
 '''
 ชื่อ_รหัส(ธนวัฒน์_6461)
 1. ชัยภัทร_6516
 2. ธรา_6529
-3.ABCD
+3.
 '''
+import numpy as np
+import math
+import HW3_utils as FKHW3
 
 #=============================================<คำตอบข้อ 1>======================================================#
 #code here
 def endEffectorJacobianHW3(q:list[float])->list[float]:
-    # Input:
+     # Input:
     # q: เวกเตอร์ Joint Configuration ขนาด 3x1
     # Output:
     # J_e: Jacobian Matrix ขนาด 6x3
@@ -55,8 +55,6 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     J_e[3:6, 2] = J_w3
     print(J_e)
     return J_e
-
-    
 
     pass
 #==============================================================================================================#
