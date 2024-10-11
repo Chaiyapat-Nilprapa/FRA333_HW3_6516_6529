@@ -8,43 +8,43 @@
 '''
 import numpy as np
 import math
-import HW3_utils as FKHW3
+from HW3_utils import FKHW3
+import roboticstoolbox as rtb
+
+from spatialmath import SE3
+from math import pi
+import matplotlib.pyplot as plt
+
 
 #=============================================<คำตอบข้อ 1>======================================================#
 #code here
-def endEffectorJacobianHW3(q:list[float])->list[float]:
-     # Input:
-    # q: เวกเตอร์ Joint Configuration ขนาด 3x1
-    # Output:
-    # J_e: Jacobian Matrix ขนาด 6x3
-
-    # เรียกใช้ฟังก์ชัน Forward Kinematics
+def endEffectorJacobianHW3(q: list[float]) -> np.ndarray:
+    
+    # เรียกใช้งานฟังก์ชัน FKHW3 เพื่อหาค่าการหมุนและตำแหน่ง
     R, P, R_e, p_e = FKHW3(q)
-
-    # สร้างเมทริกซ์ Jacobian ขนาด 6x3
+    
     J_e = np.zeros((6, 3))
-
-    # ตำแหน่งเฟรมในพิกัดหลัก (Frame 0)
+    
     p_0_0 = P[:, 0]  # ตำแหน่งของเฟรม 0
     p_0_1 = P[:, 1]  # ตำแหน่งของเฟรม 1
     p_0_2 = P[:, 2]  # ตำแหน่งของเฟรม 2
     p_0_e = p_e      # ตำแหน่งของ End Effector
 
-    # แกนการหมุนของข้อต่อในเฟรมหลัก
-    z0 = np.array([0, 0, 1])  # แกน z ของเฟรม 0
-    z1 = R[:, 2, 0]           # แกน z ของเฟรม 1
-    z2 = R[:, 2, 1]           # แกน z ของเฟรม 2
+    # แกนการหมุนของข้อต่อในเฟรมหลัก (Base Frame)
+    z0 = np.array([0.0, 0.0, 1.0])  # แกน z ของเฟรม 0
+    z1 = np.array([-np.sin(q[0]),np.cos(q[1]),0])           # แกน z ของเฟรม 1
+    z2 = np.array([-np.sin(q[0]),np.cos(q[1]),0])          # แกน z ของเฟรม 2
 
-    # คำนวณ J_v
-    J_v1 = np.cross(z0, (p_0_e - p_0_0))
-    J_v2 = np.cross(z1, (p_0_e - p_0_1))
-    J_v3 = np.cross(z2, (p_0_e - p_0_2))
+    # คำนวณส่วนตำแหน่งของ Jacobian Matrix (J_v)
+    J_v1 = np.cross(z0, (p_0_e - p_0_0))  # J_v สำหรับข้อต่อ 1
+    J_v2 = np.cross(z1, (p_0_e - p_0_1))  # J_v สำหรับข้อต่อ 2
+    J_v3 = np.cross(z2, (p_0_e - p_0_2))  # J_v สำหรับข้อต่อ 3
 
-    # คำนวณ J_omega
-    J_w1 = z0
-    J_w2 = z1
-    J_w3 = z2
-
+    # คำนวณส่วนมุมของ Jacobian Matrix (J_w)
+    J_w1 = z0  # J_w สำหรับข้อต่อ 1
+    J_w2 = z1  # J_w สำหรับข้อต่อ 2
+    J_w3 = z2  # J_w สำหรับข้อต่อ 3
+    
     # ใส่ค่าในเมทริกซ์ Jacobian
     J_e[0:3, 0] = J_v1
     J_e[0:3, 1] = J_v2
@@ -53,18 +53,67 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     J_e[3:6, 0] = J_w1
     J_e[3:6, 1] = J_w2
     J_e[3:6, 2] = J_w3
+
+    # Replace small values with 0 to prevent precision issues
+    J_e[abs(J_e) < 0.0001] = 0
+    
+    print("Jacobian Matrix at Base Frame:")
     print(J_e)
+    
     return J_e
 
-    pass
-#==============================================================================================================#
-#=============================================<คำตอบข้อ 2>======================================================#
-#code here
-def checkSingularityHW3(q:list[float])->bool:
-    pass
-#==============================================================================================================#
-#=============================================<คำตอบข้อ 3>======================================================#
-#code here
-def computeEffortHW3(q:list[float], w:list[float])->list[float]:
-    pass
-#==============================================================================================================#
+q = [0, 0, 0]  # Example joint angles
+jacobian = endEffectorJacobianHW3(q)
+  
+  #============DH============#
+    # ปรับค่าพารามิเตอร์ DH ให้ตรงกับข้อมูลที่ให้มา
+#     robot = rtb.DHRobot(
+#         [
+#             rtb.RevoluteMDH(d=d1, offset=pi),
+#             rtb.RevoluteMDH(alpha=pi/2),
+#             rtb.RevoluteMDH(a=a2),
+#         ],
+#         name="RRR_Robot"
+#     )
+
+#     # Define the transformation from the last joint to the end-effector (tool frame)
+#     tool_frame = SE3((a3 - d6), -d5, d4) @ SE3.RPY(0.0, -pi/2, 0.0)  # Transformation Matrix
+#     robot.tool = tool_frame  # Add end-effector to robot model
+
+#     # คำนวณ Jacobian Matrix ใน Base Frame
+#     J_base = robot.jacob0(q)  # ใช้มุมข้อต่อ 3 ข้อที่กำหนด
+
+#     # Print Jacobian matrix
+#     print("Jacobian Matrix at Base Frame:")
+#     print(J_base)
+    
+#     # แสดงหุ่นยนต์พร้อมการ plot โดยใช้ค่ามุมข้อต่อ q
+#     robot.plot(q, block=True)  # This will block and ensure the plot stays open
+
+#     return J_base
+
+# # Example usage
+# q = [0, 0, 0]  # Example joint angles
+# jacobian = endEffectorJacobianHW3(q)
+# print("Jacobian Matrix:\n", jacobian)
+
+
+
+
+
+
+
+
+
+
+# #==============================================================================================================#
+# #=============================================<คำตอบข้อ 2>======================================================#
+# #code here
+# def checkSingularityHW3(q:list[float])->bool:
+#     pass
+# #==============================================================================================================#
+# #=============================================<คำตอบข้อ 3>======================================================#
+# #code here
+# def computeEffortHW3(q:list[float], w:list[float])->list[float]:
+#     pass
+# #==============================================================================================================#

@@ -6,6 +6,15 @@
 2.
 3.
 '''
+
+import roboticstoolbox as rtb
+import numpy as np
+import math
+
+from spatialmath import SE3
+from math import pi
+import matplotlib.pyplot as plt
+
 #===========================================<ตรวจคำตอบข้อ 1>====================================================#
 #code here
 
