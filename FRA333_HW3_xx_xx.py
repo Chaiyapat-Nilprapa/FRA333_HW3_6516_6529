@@ -65,51 +65,27 @@ def endEffectorJacobianHW3(q: list[float]) -> np.ndarray:
 q = [0, 0, 0]  # Example joint angles
 jacobian = endEffectorJacobianHW3(q)
   
-  #============DH============#
-    # ปรับค่าพารามิเตอร์ DH ให้ตรงกับข้อมูลที่ให้มา
-#     robot = rtb.DHRobot(
-#         [
-#             rtb.RevoluteMDH(d=d1, offset=pi),
-#             rtb.RevoluteMDH(alpha=pi/2),
-#             rtb.RevoluteMDH(a=a2),
-#         ],
-#         name="RRR_Robot"
-#     )
-
-#     # Define the transformation from the last joint to the end-effector (tool frame)
-#     tool_frame = SE3((a3 - d6), -d5, d4) @ SE3.RPY(0.0, -pi/2, 0.0)  # Transformation Matrix
-#     robot.tool = tool_frame  # Add end-effector to robot model
-
-#     # คำนวณ Jacobian Matrix ใน Base Frame
-#     J_base = robot.jacob0(q)  # ใช้มุมข้อต่อ 3 ข้อที่กำหนด
-
-#     # Print Jacobian matrix
-#     print("Jacobian Matrix at Base Frame:")
-#     print(J_base)
-    
-#     # แสดงหุ่นยนต์พร้อมการ plot โดยใช้ค่ามุมข้อต่อ q
-#     robot.plot(q, block=True)  # This will block and ensure the plot stays open
-
-#     return J_base
-
-# # Example usage
-# q = [0, 0, 0]  # Example joint angles
-# jacobian = endEffectorJacobianHW3(q)
-# print("Jacobian Matrix:\n", jacobian)
-
-
-
-
-
-
-
-
-
-
+ 
 # #==============================================================================================================#
 # #=============================================<คำตอบข้อ 2>======================================================#
 # #code here
-# def checkSingularityHW3(q:list[float])->bool:
+def checkSingularityHW3(q:list[float])->bool:
+    J = endEffectorJacobianHW3(q)  # Get the Jacobian matrix
+    det_J = np.linalg.det(J[:3, :])  # Calculate the determinant of the linear part of J
+    print(f"Determinant of Jacobian: {det_J}")
+
+    # Check for singularity
+    if abs(det_J) < 0.001:
+        print("Singularity detected.")
+        return True
+    else:
+        print("No singularity detected.")
+        return False
+    
+# Example joint angles
+q = [0, 0, 0]
+jacobian = endEffectorJacobianHW3(q)
+is_singular = checkSingularityHW3(q)
 #     pass
 # #==============================================================================================================#
 # #=============================================<คำตอบข้อ 3>======================================================#
