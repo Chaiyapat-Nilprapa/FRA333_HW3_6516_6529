@@ -29,7 +29,7 @@
 
   1. FRA333_HW3_6516_6529.py >> ไฟล์คำตอบ
   2. testScript.py >> ไฟล์ตรวจคำตอบ
-  3. HW3_utils.py >> Forward Kinematic function ที่บริษัทให้มา
+  3. HW3_utils.py >> Forward Kinematic function ที่โจทย์ให้มา
 
 ## **เมื่อรันไฟล์คำตอบ (FRA333_HW3_6516_6529.py)**
 
