@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 #=============================================<คำตอบข้อ 1>======================================================#
 #code here
-def endEffectorJacobianHW3(q: list[float]) -> np.ndarray:
+def endEffectorJacobianHW3(q: list[float], print_jacobian: bool = False) -> np.ndarray:
     
     # เรียกใช้งานฟังก์ชัน FKHW3 เพื่อหาค่าการหมุนและตำแหน่ง
     R, P, R_e, p_e = FKHW3(q)
@@ -56,14 +56,15 @@ def endEffectorJacobianHW3(q: list[float]) -> np.ndarray:
 
     # Replace small values with 0 to prevent precision issues
     J_e[abs(J_e) < 0.0001] = 0
-    
-    print("Jacobian Matrix at Base Frame:")
-    print(J_e)
+
+    if print_jacobian:
+        print("Jacobian Matrix at Base Frame:")
+        print(J_e)
     
     return J_e
 
 q = [0, 0, 0]  # Example joint angles
-jacobian = endEffectorJacobianHW3(q)
+jacobian = endEffectorJacobianHW3(q, print_jacobian=True)
   
 # #==============================================================================================================#
 # #=============================================<คำตอบข้อ 2>======================================================#
@@ -71,7 +72,7 @@ jacobian = endEffectorJacobianHW3(q)
 def checkSingularityHW3(q:list[float])->bool:
     J = endEffectorJacobianHW3(q)  # Get the Jacobian matrix
     det_J = np.linalg.det(J[:3, :])  # Calculate the determinant of the linear part of J
-    print(f"Determinant of Jacobian: {det_J}")
+    print("\n" f"Determinant of Jacobian: {det_J}")
     # Check for singularity
     if abs(det_J) < 0.001:
         print("Singularity detected.")
@@ -97,5 +98,6 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
 
 q = [0,0,0]
 w = [1.0,1.0,5.0,1.0,2.0,1.0]
+print("\n""Computer Effort: ")
 print(computeEffortHW3(q,w))
 #==============================================================================================================#

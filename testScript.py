@@ -10,36 +10,37 @@ import numpy as np
 import math
 from HW3_utils import FKHW3
 import roboticstoolbox as rtb
-
+from roboticstoolbox import robot
 from spatialmath import SE3
 from math import pi
 import matplotlib.pyplot as plt
+import FRA333_HW3_6516_6529 as hand
+
+d1 = 0.0892
+a2 = -0.425
+a3 = -0.39243
+d4 = 0.109
+d5 = 0.093
+d6 = 0.082
+# กำหนดค่ามุมข้อต่อเริ่มต้น
+
+# ปรับค่าพารามิเตอร์ DH ให้ตรงกับข้อมูลที่ให้มา
+robot = rtb.DHRobot(
+    [
+        rtb.RevoluteMDH(d= d1 , offset = pi),
+        rtb.RevoluteMDH(alpha = pi/2 ),
+        rtb.RevoluteMDH(a=a2),
+    ],
+    name = "RRR_Robot"
+    )
 
 
 #===========================================<ตรวจคำตอบข้อ 1>====================================================#
 #code here
 def testscript_1(q: list[float]) -> np.ndarray:
-  d1 = 0.0892
-  a2 = -0.425
-  a3 = -0.39243
-  d4 = 0.109
-  d5 = 0.093
-  d6 = 0.082
-  # กำหนดค่ามุมข้อต่อเริ่มต้น
 
   # เรียกใช้งานฟังก์ชัน FKHW3 เพื่อหาค่าการหมุนและตำแหน่ง
   R, P, R_e, p_e = FKHW3(q)
-
-  # ปรับค่าพารามิเตอร์ DH ให้ตรงกับข้อมูลที่ให้มา
-  robot = rtb.DHRobot(
-      [
-          rtb.RevoluteMDH(d= d1 , offset = pi),
-          rtb.RevoluteMDH(alpha = pi/2 ),
-          rtb.RevoluteMDH(a=a2),
-      ],
-      name = "RRR_Robot"
-      )
-
 
   tool_frame = SE3((a3-d6),-d5,d4) @ SE3.RPY(0.0,-pi/2,0.0) #Transformation Matrix from last joint to end-effector
   robot.tool = tool_frame #add End-effector to robot
@@ -48,15 +49,57 @@ def testscript_1(q: list[float]) -> np.ndarray:
   J_base[abs(J_base) < 0.0001] = 0
   return J_base
 
-q = [0, 0, 0]
-print("Jacobian Matrix at ToolBox:")
-print(testscript_1(q))
 #==============================================================================================================#
 #===========================================<ตรวจคำตอบข้อ 2>====================================================#
 #code here
+def testscript_2(robot: robot, q: list[float]) -> np.ndarray:
+    # รับ Jacobian จาก Robotic Toolbox
+    J = robot.jacob0(q)  # jacob0 จะคำนวณ Jacobian ที่ end-effector ในกรอบการอ้างอิงโลก
+
+    # ดึงส่วน Linear Velocity ของ Jacobian Matrix
+    J_Velocity = J[:3, :]  # ได้เมทริกซ์ขนาด 3x6 (หรือขึ้นกับจำนวน DOF ของหุ่นยนต์)
+
+    # คำนวณ Determinant ของ J_Velocity
+    if J_Velocity.shape[0] == J_Velocity.shape[1]:  # ตรวจสอบว่าเป็นเมทริกซ์กำลังสอง
+        det_J_Velocity = np.linalg.det(J_Velocity)
+    else:
+        print("\n""Cannot compute determinant, J_Velocity is not square matrix.")
+        det_J_Velocity = None
+
+    # ตรวจสอบสภาวะ Singularity
+    if det_J_Velocity is not None and abs(det_J_Velocity) < 0.001:
+        print("\n""Singularity", det_J_Velocity)
+    elif det_J_Velocity is not None:
+        print("\n""Normal =", det_J_Velocity)
+
+    return det_J_Velocity
 
 #==============================================================================================================#
 #===========================================<ตรวจคำตอบข้อ 3>====================================================#
 #code here
+def testscript_3(q: list[float], w: list[float], robot: rtb.DHRobot) -> np.ndarray:
+    # รับ Jacobian จาก Robotic Toolbox
+    J_e = robot.jacob0(q)  # jacob0 ให้ Jacobian ที่ end-effector ในกรอบการอ้างอิงโลก
 
+    # ทรานสโพส Jacobian matrix
+    J_ret = np.transpose(J_e)  # ทรานสโพส Jacobian matrix
+
+    # แปลง wrench (แรงที่กระทำต่อ end-effector) เป็น numpy array ขนาด 6x1
+    w_t = np.array(w).reshape(6, 1)  # ตรวจสอบให้แน่ใจว่า w เป็นเวกเตอร์ 6x1
+
+    # คำนวณ tau โดย dot product ของ Transposed Jacobian และ Wrench
+    tau = J_ret @ w_t  # tau คือแรง/ทอร์กที่ข้อต่อเนื่องจากแรง/ทอร์ก w ที่ end-effector
+    tau = tau.flatten()
+    return tau # คืนค่า tau เป็นเวกเตอร์ 1 มิติ
 #==============================================================================================================#
+
+q = hand.q 
+w = hand.w 
+
+print(testscript_1(q))
+
+determinant_velocity = testscript_2(robot, q)
+print("Determinant of the linear part of the Jacobian:", determinant_velocity)
+
+tau = testscript_3(q, w, robot)
+print("\n""Joint torques/forces due to the wrench applied at the end-effector:", tau)
