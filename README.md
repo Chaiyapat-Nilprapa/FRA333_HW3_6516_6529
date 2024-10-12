@@ -57,12 +57,30 @@
   - จากภาพเนื่องจาก Det ของ Jacobian มีค่าน้อยกว่า 0.01 จึงเกิด Singularity  
 
 ## **เมื่อรันไฟล์ตรวจคำตอบ (testScript.py)**
-
-  Output ที่ได้ออกมาจากครั้งที่ 1
-  ![Testcase1](TS1.png)
   
+  **Input ที่ใส่**
+  
+  ![Testcaseinput](TSinput.png)
+
+  - เป็น Input ที่ดึงมาจาก ไฟล์คำตอบเพื่อให้ทั้งสองมี Input เหมือนกัน
+  - เมื่อเปลี่ยน Input ที่ไฟล์คำตอบก็สามารถรันตรวจคำตอบต่อได่เลย
+
+  **วิธีการตรวจ**
+  ใช้ DH parameter และ Roboticstoolbox ในการตรวจ
+ 
+  ![TestSol](TSsol.png)
+  
+  Output ที่ได้ออกมาจากครั้งที่ 1
+
+  ![Testcase1](TS1.png)
+
   Output ที่ได้ออกมาจากครั้งที่ 2
+ 
   ![Testcase2](TS2.png)
 
+  - จากทั้งสองภาพแสดงให้เห็นว่าคำตอบตรงกัน
 
+## **Reference**
+  https://petercorke.github.io/robotics-toolbox-python
+  https://www.youtube.com/watch?v=pGPaLV35Mnk&list=PLHnZZE5j6C65J4-1t-azzmceXevAtWbRf
 
