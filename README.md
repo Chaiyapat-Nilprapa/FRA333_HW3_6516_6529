@@ -1,9 +1,24 @@
 <font size="10">**FRA333 HW3 จัดทำโดย**</font>
 1. ชัยภัทร 65340500016
-2. ธารา 65340500029
+2. ธรา 65340500029
 
-- Install the library before running the code!
-xxxxxx
+**โปรดลง Library พวกนี้ก่อนรัน**
+  - numpy
+  - math
+  - roboticstoolbox
+
+**ลงผ่าน Command Prompt**
+```bash
+  - pip install numpy==1.24.4
+```
+```bash
+  - pip install math
+```
+```bash
+  - pip install roboticstoolbox
+```
+
+  
 
 - The HW3 file we use 
 1. FRA333_HW3_6516_6529.py >> Answer
