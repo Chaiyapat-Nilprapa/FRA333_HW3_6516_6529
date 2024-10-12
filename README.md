@@ -33,5 +33,17 @@
 
 ## **เมื่อรันไฟล์คำตอบ (FRA333_HW3_6516_6529.py)**
 
+  Output ที่ได้ออกมา
+
+![Answer]("Answer.png")
+
+  - เมทริกซ์ Jacobian ที่ได้จากการเทียบจาก Base
+  - Det ของ Jacobian เพื่อใช้หา Singularity
+  - จากภาพเนื่องจาก Det ของ Jacobian มีค่ามากกว่า 0.01 จึงไม่เกิด Singularity
+  - Effort ที่เกิดขึ้น (ค่า Tau ที่แต่ละข้อต่อ)
+
+  Input ที่ใส่เข้าไป
+  
+
 
 
