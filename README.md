@@ -35,7 +35,7 @@
 
   Output ที่ได้ออกมา
 
-![Answer]("Answer.png")
+![Answer1](Answer1.png)
 
   - เมทริกซ์ Jacobian ที่ได้จากการเทียบจาก Base
   - Det ของ Jacobian เพื่อใช้หา Singularity
@@ -44,6 +44,25 @@
 
   Input ที่ใส่เข้าไป
   
+  ![Input1](input1.png)
+
+  เมื่อลองเปลี่ยน Input เป็น
+
+  ![Input2](input2.png)
+
+  Output ที่ออกมาจะเป็นดังนี้
+
+  ![Answer2](Answer2.png)
+  
+  - จากภาพเนื่องจาก Det ของ Jacobian มีค่าน้อยกว่า 0.01 จึงเกิด Singularity  
+
+## **เมื่อรันไฟล์ตรวจคำตอบ (testScript.py)**
+
+  Output ที่ได้ออกมาจากครั้งที่ 1
+  ![Testcase1](TS1.png)
+  
+  Output ที่ได้ออกมาจากครั้งที่ 2
+  ![Testcase2](TS2.png)
 
 
 
