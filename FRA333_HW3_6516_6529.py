@@ -6,15 +6,14 @@
 2. ธรา_6529
 3.
 '''
+
 import numpy as np
 import math
-from HW3_utils import FKHW3
 import roboticstoolbox as rtb
-
+import matplotlib.pyplot as plt
 from spatialmath import SE3
 from math import pi
-import matplotlib.pyplot as plt
-
+from HW3_utils import FKHW3
 
 #=============================================<คำตอบข้อ 1>======================================================#
 #code here
@@ -96,8 +95,8 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
     tau = J_ret @ w_t #Find tau from Transpose Jacobian Matrix dot wrench Matrix
     return tau #Return Joint forces/torques due to w
 
-q = [0,0,0]
-w = [1.0,1.0,5.0,1.0,2.0,1.0]
+q = [0,0,0] # กำหนดค่า q
+w = [1.0,1.0,5.0,1.0,2.0,1.0] # กำหนดค่า w
 print("\n""Computer Effort: ")
 print(computeEffortHW3(q,w))
 #==============================================================================================================#

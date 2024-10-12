@@ -8,21 +8,21 @@
 '''
 import numpy as np
 import math
-from HW3_utils import FKHW3
 import roboticstoolbox as rtb
+import matplotlib.pyplot as plt
+import FRA333_HW3_6516_6529 as hand
+from HW3_utils import FKHW3
 from roboticstoolbox import robot
 from spatialmath import SE3
 from math import pi
-import matplotlib.pyplot as plt
-import FRA333_HW3_6516_6529 as hand
 
+# กำหนดระยะห่างแต่ละข้อ
 d1 = 0.0892
 a2 = -0.425
 a3 = -0.39243
 d4 = 0.109
 d5 = 0.093
 d6 = 0.082
-# กำหนดค่ามุมข้อต่อเริ่มต้น
 
 # ปรับค่าพารามิเตอร์ DH ให้ตรงกับข้อมูลที่ให้มา
 robot = rtb.DHRobot(
@@ -44,7 +44,9 @@ def testscript_1(q: list[float]) -> np.ndarray:
 
   tool_frame = SE3((a3-d6),-d5,d4) @ SE3.RPY(0.0,-pi/2,0.0) #Transformation Matrix from last joint to end-effector
   robot.tool = tool_frame #add End-effector to robot
+  
   # คำนวณ Jacobian Matrix ใน Base Frame
+  
   J_base = robot.jacob0(q)  # ใช้มุมข้อต่อ 3 ข้อที่กำหนดเท่านั้น
   J_base[abs(J_base) < 0.0001] = 0
   return J_base
@@ -93,13 +95,13 @@ def testscript_3(q: list[float], w: list[float], robot: rtb.DHRobot) -> np.ndarr
     return tau # คืนค่า tau เป็นเวกเตอร์ 1 มิติ
 #==============================================================================================================#
 
-q = hand.q 
-w = hand.w 
+q = hand.q #กำหนดให้ค่า q มีค่าเท่ากับ q จากโค้ด FRA333_HW3_6516_6529
+w = hand.w #กำหนดให้ค่า w มีค่าเท่ากับ w จากโค้ด FRA333_HW3_6516_6529
 
-print(testscript_1(q))
+print(testscript_1(q)) #ปริ้นค่าที่ได้จาก Function testscript 1 
 
-determinant_velocity = testscript_2(robot, q)
-print("Determinant of the linear part of the Jacobian:", determinant_velocity)
+determinant_velocity = testscript_2(robot, q) #ใ ห้ determinant_velocity = ค้าที่ได้มาจาก testscript 2
+print("Determinant of the linear part of the Jacobian:", determinant_velocity)#ปริ้นค่าที่ได้จาก Function testscript 2
 
-tau = testscript_3(q, w, robot)
-print("\n""Joint torques/forces due to the wrench applied at the end-effector:", tau)
+tau = testscript_3(q, w, robot) # ให้ tau = ค้าที่ได้มาจาก testscript 3
+print("\n""Joint torques/forces due to the wrench applied at the end-effector:", tau)# ปริ้นค่าที่ได้จาก Function testscript 3
