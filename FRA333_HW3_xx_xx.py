@@ -65,7 +65,6 @@ def endEffectorJacobianHW3(q: list[float]) -> np.ndarray:
 q = [0, 0, 0]  # Example joint angles
 jacobian = endEffectorJacobianHW3(q)
   
- 
 # #==============================================================================================================#
 # #=============================================<คำตอบข้อ 2>======================================================#
 # #code here
@@ -73,7 +72,6 @@ def checkSingularityHW3(q:list[float])->bool:
     J = endEffectorJacobianHW3(q)  # Get the Jacobian matrix
     det_J = np.linalg.det(J[:3, :])  # Calculate the determinant of the linear part of J
     print(f"Determinant of Jacobian: {det_J}")
-
     # Check for singularity
     if abs(det_J) < 0.001:
         print("Singularity detected.")
@@ -84,12 +82,20 @@ def checkSingularityHW3(q:list[float])->bool:
     
 # Example joint angles
 q = [0, 0, 0]
-jacobian = endEffectorJacobianHW3(q)
 is_singular = checkSingularityHW3(q)
-#     pass
-# #==============================================================================================================#
-# #=============================================<คำตอบข้อ 3>======================================================#
-# #code here
-# def computeEffortHW3(q:list[float], w:list[float])->list[float]:
-#     pass
-# #==============================================================================================================#
+
+    
+#==============================================================================================================#
+#=============================================<คำตอบข้อ 3>======================================================#
+#code here
+def computeEffortHW3(q:list[float], w:list[float])->list[float]:
+    J_e = endEffectorJacobianHW3(q) #Get Jacobian Matrix from endEffectorJacobianHW3 function
+    J_ret = np.transpose(J_e) #Transpose Jacobian Matrix
+    w_t = np.array(w) #Transpose wrench Matrix to 6x1
+    tau = J_ret @ w_t #Find tau from Transpose Jacobian Matrix dot wrench Matrix
+    return tau #Return Joint forces/torques due to w
+
+q = [0,0,0]
+w = [1.0,1.0,5.0,1.0,2.0,1.0]
+print(computeEffortHW3(q,w))
+#==============================================================================================================#
