@@ -61,9 +61,6 @@ def endEffectorJacobianHW3(q: list[float], print_jacobian: bool = False) -> np.n
         print(J_e)
     
     return J_e
-
-q = [0, 0, 0]  # Example joint angles
-jacobian = endEffectorJacobianHW3(q, print_jacobian=True)
   
 # #==============================================================================================================#
 # #=============================================<คำตอบข้อ 2>======================================================#
@@ -80,14 +77,10 @@ def checkSingularityHW3(q:list[float])->bool:
         print("No singularity detected.")
         return False
     
-# Example joint angles
-q = [0, 0, 0]
-is_singular = checkSingularityHW3(q)
-
-    
 #==============================================================================================================#
 #=============================================<คำตอบข้อ 3>======================================================#
 #code here
+
 def computeEffortHW3(q:list[float], w:list[float])->list[float]:
     J_e = endEffectorJacobianHW3(q) #Get Jacobian Matrix from endEffectorJacobianHW3 function
     J_ret = np.transpose(J_e) #Transpose Jacobian Matrix
@@ -95,8 +88,14 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
     tau = J_ret @ w_t #Find tau from Transpose Jacobian Matrix dot wrench Matrix
     return tau #Return Joint forces/torques due to w
 
-q = [0,0,0] # กำหนดค่า q
+#==============================================================================================================#
+
+#=== input ===#
+q = [0, 0, 0] # กำหนดค่า q
 w = [1.0,1.0,5.0,1.0,2.0,1.0] # กำหนดค่า w
+
+#=== output ===#
+jacobian = endEffectorJacobianHW3(q, print_jacobian=True)
+is_singular = checkSingularityHW3(q)
 print("\n""Computer Effort: ")
 print(computeEffortHW3(q,w))
-#==============================================================================================================#

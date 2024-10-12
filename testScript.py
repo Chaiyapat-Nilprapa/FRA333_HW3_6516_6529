@@ -100,8 +100,8 @@ w = hand.w #กำหนดให้ค่า w มีค่าเท่าก�
 
 print(testscript_1(q)) #ปริ้นค่าที่ได้จาก Function testscript 1 
 
-determinant_velocity = testscript_2(robot, q) #ใ ห้ determinant_velocity = ค้าที่ได้มาจาก testscript 2
-print("Determinant of the linear part of the Jacobian:", determinant_velocity)#ปริ้นค่าที่ได้จาก Function testscript 2
+# determinant_velocity = testscript_2(robot, q) #ใ ห้ determinant_velocity = ค้าที่ได้มาจาก testscript 2
+# print("Determinant of the linear part of the Jacobian:", determinant_velocity)#ปริ้นค่าที่ได้จาก Function testscript 2
 
-tau = testscript_3(q, w, robot) # ให้ tau = ค้าที่ได้มาจาก testscript 3
-print("\n""Joint torques/forces due to the wrench applied at the end-effector:", tau)# ปริ้นค่าที่ได้จาก Function testscript 3
+# tau = testscript_3(q, w, robot) # ให้ tau = ค้าที่ได้มาจาก testscript 3
+# print("\n""Joint torques/forces due to the wrench applied at the end-effector:", tau)# ปริ้นค่าที่ได้จาก Function testscript 3
